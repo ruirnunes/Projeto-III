@@ -503,3 +503,55 @@ body {
 }
 
 
+/* ========================= */
+/* RESPONSIVIDADE */
+/* ========================= */
+@media (max-width: 992px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-areas:
+            "header"
+            "sidebar"
+            "main"
+            "footer";
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 16px;
+    }
+
+    .transacoes {
+        grid-template-columns: 1fr; /* empilha formulário e histórico */
+        gap: 16px;
+    }
+
+    .nova-transacao,
+    .historico {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .titulo-card,
+    .valor,
+    .informacao,
+    .nome-transacao,
+    .etiqueta,
+    .data-transacao,
+    .valor-transacao {
+        font-size: 12px;
+    }
+}

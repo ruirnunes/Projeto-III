@@ -97,8 +97,8 @@ export function atualizarCards(){
    const cardReceita = valoresCards[1]
    const cardDespesa = valoresCards[2]
 
-   cardBalanco.innerText = totais.total
-   cardReceita.innerText = totais.totalReceita
+   cardBalanco.innerText = `${totais.total} €`
+   cardReceita.innerText = `${totais.totalReceita} €`
    cardReceita.classList.add('positivo')
-   cardDespesa.innerText = totais.totalDespesa
+   cardDespesa.innerText = `${totais.totalDespesa} €`
 }
