@@ -438,6 +438,7 @@ body {
     color: var(--accent-color);
     font-size: 14px;
     font-weight: 500;
+    overflow-wrap: anywhere;
 }
 
 .etiqueta {
