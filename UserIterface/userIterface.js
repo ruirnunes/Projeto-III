@@ -50,7 +50,7 @@ export function renderLista(){
       // 4) coluna: data
       const data = document.createElement('span');
       data.classList.add('data-transacao');
-      data.innerText = new Date().toLocaleDateString();
+      data.innerText = t.date;
 
       // 5) coluna: valor
       const valor = document.createElement('span');

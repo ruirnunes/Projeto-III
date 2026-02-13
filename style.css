@@ -278,6 +278,12 @@ body {
     width: 100%;
 }
 
+select#tipo-transacao option {
+    background-color: var(--tertiary-color); /* cor do dropdown */
+    color: var(--accent-color);              /* texto visível */
+}
+
+
 .qtd-container, .tipo-transacao-container {
     display: flex;
     flex-direction: column;
@@ -286,20 +292,26 @@ body {
     min-width: 0;
 }
 
-.categoria-container {
+.data-transacao-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* .categoria-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 8px;
-}
+} */
 
-.categorias {
+/* .categorias {
     color: var(--accent-color);
     font-size: 12px;
     padding: 12px;
     border: 1px solid var(--card-borders);
     border-radius: 8px;
-}
+} */
 
 .adiciona-historia {
     background-color: var(--primary-color);

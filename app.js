@@ -29,10 +29,11 @@ const inputValor = document.getElementById('quantidade')
 const tipoTransacao = document.getElementById('tipo-transacao')
 const btnAdicionar = document.querySelector('.adiciona-historia');
 const alertaInput = document.getElementById('alerta-input');
+const inputDate = document.getElementById('data-transacao')
 
 
 btnAdicionar.addEventListener('click',()=>{
-    const novaTransacao = objectTransacao(inputDescricao, inputValor, tipoTransacao);
+    const novaTransacao = objectTransacao(inputDescricao, inputValor, tipoTransacao, inputDate);
    
     if (!novaTransacao) {
         // Mostra alerta de input inválido
@@ -53,6 +54,7 @@ btnAdicionar.addEventListener('click',()=>{
     // limpar inputs
     inputDescricao.value = '';
     inputValor.value = '';
+    inputDate.value = ''
 })
 
 
@@ -85,14 +87,15 @@ function validarInputs(inputTexto,inputNumero){
     return false
 }
 
-function objectTransacao(inputTexto,inputNumero,selectTipo){
+function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
     if (!validarInputs(inputTexto,inputNumero)) return null
     
     return {
         id: Date.now(),
         descricao: inputTexto.value.trim(),
         valor: Number(inputNumero.value),
-        tipo: selectTipo.value
+        tipo: selectTipo.value,
+        date: inputDate.value
     }
     
 }
