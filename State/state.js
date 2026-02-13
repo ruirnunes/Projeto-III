@@ -35,3 +35,9 @@ export function getTransacoes(){
    let transacoes = carregarTransacoes() 
    return transacoes
 }
+
+export function removerTransacao(id){
+   let transacoes = carregarTransacoes()
+   const listaAtualizada = transacoes.filter(t => t.id !== id);
+   guardarTransacoes(listaAtualizada)
+}

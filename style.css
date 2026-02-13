@@ -344,7 +344,9 @@ body {
 
 .cabecalho-tabela {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr; 
+    grid-template-columns: 2fr 1fr 1fr 1fr  minmax(30px, auto); /* igual às linhas */
+    align-items: center; /* verticalmente no centro */
+    gap: 8px;
     padding: 10px 20px;
     color: var(--gray-titles);
     font-size: 11px;
@@ -352,16 +354,37 @@ body {
     letter-spacing: 1px;
 }
 
+.cabecalho-tabela span {
+    justify-self: center;
+}
+
+
 .item-transacao {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto; /* nome, tipo, data, valor, botão */
     align-items: center;
-    background-color: var(--card-background);
-    border: 1px solid var(--card-borders);
-    border-radius: 8px;
-    padding: 12px 20px;
-    margin-bottom: 12px;
-    
+    gap: 8px;
+    position: relative;
+    padding: 8px 0; /* espaçamento vertical */
+    border-bottom: 1px solid var(--card-borders);
+}
+
+.btn-remover {
+    background: transparent;
+    border: none;
+    color: var(--expense-color);
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0; /* inicialmente invisível */
+    transition: opacity 0.2s;
+}
+
+.item-transacao:hover .btn-remover {
+    opacity: 1; /* aparece no hover */
+}
+
+.item-transacao span {
+    justify-self: center; /* centra horizontalmente na célula do grid */
 }
 
 .info-transacao {
@@ -477,3 +500,5 @@ body {
 .alerta.show {
     display: block;         /* mostrar quando for necessário */
 }
+
+

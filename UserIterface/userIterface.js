@@ -19,7 +19,7 @@ DESAFIO:
 Como aplicar classes diferentes para receita e despesa?
 */
 
-import { getTransacoes } from "../State/state.js";
+import { getTransacoes, removerTransacao } from "../State/state.js";
 import { calcularTotais } from "../Transactions/transactions.js";
 
 const listaTransacoes = document.querySelector('.lista-transacoes');
@@ -63,11 +63,25 @@ export function renderLista(){
          valor.classList.add('negativo');
       }
 
+      item.dataset.id = t.id;
+
+      const btn = document.createElement('button');
+      btn.classList.add('btn-remover');
+      btn.innerText = 'Remover';
+      btn.dataset.id = t.id;
+
+      btn.addEventListener('click',()=>{
+         removerTransacao(t.id);
+         renderLista();
+         atualizarCards();
+      })
+
       // montar a linha
       item.appendChild(nome)
       item.appendChild(tipo)
       item.appendChild(data);
       item.appendChild(valor);
+      item.appendChild(btn)
 
       // adicionar à lista
       listaTransacoes.appendChild(item);

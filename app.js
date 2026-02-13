@@ -89,6 +89,7 @@ function objectTransacao(inputTexto,inputNumero,selectTipo){
     if (!validarInputs(inputTexto,inputNumero)) return null
     
     return {
+        id: Date.now(),
         descricao: inputTexto.value.trim(),
         valor: Number(inputNumero.value),
         tipo: selectTipo.value
