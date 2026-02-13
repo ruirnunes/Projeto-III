@@ -111,15 +111,23 @@ function validarNumeros(valorAdicionar){
     }
 }
 
-function validarInputs(inputTexto,inputNumero){
-    if (validarTexto(inputTexto) && validarNumeros(inputNumero)){
+function validarData(inputDate){
+    const dataAtual = new Date()
+    const dataSelecionada = new Date(inputDate.value)
+
+    if (dataSelecionada > dataAtual) return false
+    return true
+}
+
+function validarInputs(inputTexto,inputNumero,inputDate){
+    if (validarTexto(inputTexto) && validarNumeros(inputNumero) && validarData(inputDate)){
         return true
     }
     return false
 }
 
 function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
-    if (!validarInputs(inputTexto,inputNumero)) return null
+    if (!validarInputs(inputTexto,inputNumero,inputDate)) return null
     
     return {
         id: Date.now(),
@@ -127,8 +135,7 @@ function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
         valor: Number(inputNumero.value),
         tipo: selectTipo.value,
         date: inputDate.value
-    }
-    
+    }   
 }
 
 function filtrarHistorico() {
