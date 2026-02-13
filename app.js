@@ -30,7 +30,33 @@ const tipoTransacao = document.getElementById('tipo-transacao')
 const btnAdicionar = document.querySelector('.adiciona-historia');
 const alertaInput = document.getElementById('alerta-input');
 const inputDate = document.getElementById('data-transacao')
+const mesFiltro = document.getElementById('mes-filtro')
+const anoFiltro = document.getElementById('ano-filtro')
+const tituloFiltro = document.querySelector('.sub-titulo-historico')
+const extratoCompleto = document.querySelector('.link-extrato')
 
+const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+
+meses.forEach((mes,index)=>{
+    const opcaoMes = document.createElement('option')
+    opcaoMes.value = index
+    opcaoMes.innerText = mes
+    mesFiltro.appendChild(opcaoMes)
+})
+
+const anoAtual = new Date().getFullYear()
+for (let i = anoAtual; i >= anoAtual - 10; i--){
+    const opcaoAno = document.createElement('option')
+    opcaoAno.value = i
+    opcaoAno.innerText = i
+    anoFiltro.appendChild(opcaoAno)
+}
+
+mesFiltro.value = new Date().getMonth()
+anoFiltro.value = new Date().getFullYear() 
+
+mesFiltro.addEventListener('click',filtrarHistorico)
+anoFiltro.addEventListener('click',filtrarHistorico)
 
 btnAdicionar.addEventListener('click',()=>{
     const novaTransacao = objectTransacao(inputDescricao, inputValor, tipoTransacao, inputDate);
@@ -48,7 +74,8 @@ btnAdicionar.addEventListener('click',()=>{
     alertaInput.style.display = 'none';
     
     adicionarTransacao(novaTransacao)
-    renderLista()   
+    filtrarHistorico()
+    // renderLista()   
     atualizarCards()
 
     // limpar inputs
@@ -57,6 +84,10 @@ btnAdicionar.addEventListener('click',()=>{
     inputDate.value = ''
 })
 
+extratoCompleto.addEventListener('click',()=>{
+    renderLista(getTransacoes());
+    tituloFiltro.innerText = 'Histórico — Todas as transações'
+})
 
 function validarTexto(descricaoAdicionar){
     const textotest = descricaoAdicionar.value.trim();
@@ -100,5 +131,26 @@ function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
     
 }
 
-renderLista()
+function filtrarHistorico() {
+    const mesSelecionado = Number(mesFiltro.value)
+    const anoSelecionado = Number(anoFiltro.value)
+
+    // pega todas as transações
+    const todasTransacoes = getTransacoes()
+
+    // filtra pelo mês e ano
+    const transacoesFiltradas = todasTransacoes.filter(t => {
+        const data = new Date(t.date)
+        return data.getMonth() === mesSelecionado && data.getFullYear() === anoSelecionado
+    })
+
+    const nomeMes = meses[mesSelecionado]
+    tituloFiltro.innerText = `Histórico - ${nomeMes} ${anoSelecionado}`
+    
+    // renderiza apenas as transações filtradas
+    renderLista(transacoesFiltradas)
+}
+
+filtrarHistorico()
+// renderLista()
 atualizarCards()

@@ -24,9 +24,9 @@ import { calcularTotais } from "../Transactions/transactions.js";
 
 const listaTransacoes = document.querySelector('.lista-transacoes');
 
-export function renderLista(){
-   const transacoes = getTransacoes()
+export function renderLista(transacoes){
    listaTransacoes.innerHTML = '';
+
    transacoes.forEach(t => {
 
       // 1) linha da transação
@@ -72,7 +72,8 @@ export function renderLista(){
 
       btn.addEventListener('click',()=>{
          removerTransacao(t.id);
-         renderLista();
+         filtrarHistorico()
+         // renderLista();
          atualizarCards();
       })
 
@@ -102,3 +103,4 @@ export function atualizarCards(){
    cardReceita.classList.add('positivo')
    cardDespesa.innerText = `${totais.totalDespesa} €`
 }
+

@@ -567,3 +567,20 @@ select#tipo-transacao option {
         font-size: 12px;
     }
 }
+
+
+#mes-filtro, #ano-filtro {
+    background-color: transparent;  /* fundo do select */
+    color: var(--accent-color);     /* cor do texto */
+    border: 1px solid var(--card-borders);
+    border-radius: 4px;
+    padding: 8px;
+    appearance: none;               /* remove o estilo default do browser */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#mes-filtro option, #ano-filtro option {
+    background-color: var(--tertiary-color);  /* fundo do dropdown */
+    color: var(--accent-color);               /* texto visível */
+}
