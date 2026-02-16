@@ -418,7 +418,7 @@ select#tipo-transacao option {
 }
 
 .historico::-webkit-scrollbar {
-    width: 8px;           /* largura da barra */
+    width: 8px;  /* largura da barra */
 }
 
 .historico::-webkit-scrollbar-track {
@@ -450,7 +450,7 @@ select#tipo-transacao option {
     color: var(--accent-color);
     font-size: 14px;
     font-weight: 500;
-    overflow-wrap: anywhere;
+    overflow-wrap: anywhere; /*quebra a linha de modo a que não passe a largura da coluna*/
 }
 
 .etiqueta {

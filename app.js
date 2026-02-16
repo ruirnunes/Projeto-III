@@ -1,29 +1,8 @@
-/*
-OBJETIVO:
-Conectar tudo.
-
-PASSO A PASSO:
-
-1) Capturar inputs do formulário.
-2) Escutar clique do botão.
-3) Validar dados.
-4) Criar objeto transação.
-5) Atualizar estado.
-6) Re-renderizar UI.
-7) Limpar formulário.
-
-IMPORTANTE:
-Sempre que adicionar uma transação:
-- Atualizar lista
-- Atualizar cards
-
-Pergunta:
-O que deve acontecer quando a página recarrega?
-*/
-
-import {adicionarTransacao, getTransacoes} from './State/state.js'
+import {adicionarTransacao, getTransacoes, removerTransacao} from './State/state.js'
 import { renderLista, atualizarCards } from './UserIterface/userIterface.js'
+import { validarInputs } from './Validations/validations.js'
 
+// Captura dos elementos do DOM
 const inputDescricao = document.getElementById('descricao')
 const inputValor = document.getElementById('quantidade')
 const tipoTransacao = document.getElementById('tipo-transacao')
@@ -35,8 +14,10 @@ const anoFiltro = document.getElementById('ano-filtro')
 const tituloFiltro = document.querySelector('.sub-titulo-historico')
 const extratoCompleto = document.querySelector('.link-extrato')
 
+// Lista de meses para o filtro
 const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
+// Preenche o select dos meses
 meses.forEach((mes,index)=>{
     const opcaoMes = document.createElement('option')
     opcaoMes.value = index
@@ -44,6 +25,7 @@ meses.forEach((mes,index)=>{
     mesFiltro.appendChild(opcaoMes)
 })
 
+// Preenche o select dos anos (últimos 10 anos)
 const anoAtual = new Date().getFullYear()
 for (let i = anoAtual; i >= anoAtual - 10; i--){
     const opcaoAno = document.createElement('option')
@@ -52,31 +34,37 @@ for (let i = anoAtual; i >= anoAtual - 10; i--){
     anoFiltro.appendChild(opcaoAno)
 }
 
+// Define filtros iniciais com o mês/ano atual
 mesFiltro.value = new Date().getMonth()
 anoFiltro.value = new Date().getFullYear() 
 
-mesFiltro.addEventListener('click',filtrarHistorico)
-anoFiltro.addEventListener('click',filtrarHistorico)
+// Atualiza a lista quando os filtros mudam
+mesFiltro.addEventListener('change', () => {
+   renderLista(filtrarHistorico(), onRemoverTransacao)
+})
+anoFiltro.addEventListener('change', () => {
+   renderLista(filtrarHistorico(), onRemoverTransacao)
+})
 
+// Adiciona nova transação ao clicar no botão
 btnAdicionar.addEventListener('click',()=>{
     const novaTransacao = objectTransacao(inputDescricao, inputValor, tipoTransacao, inputDate);
    
     if (!novaTransacao) {
         // Mostra alerta de input inválido
         alertaInput.style.display = 'block';
-        // Esconde o alerta após 3 segundos
         setTimeout(() => {
             alertaInput.style.display = 'none';
         }, 3000);
-        return; // para a execução aqui, não adiciona nada
+        return; 
     }
     // Se passar na validação, esconde o alerta
     alertaInput.style.display = 'none';
     
+    // Adiciona a transação ao estado e atualiza a UI
     adicionarTransacao(novaTransacao)
-    filtrarHistorico()
-    // renderLista()   
-    atualizarCards()
+    renderLista(filtrarHistorico(),onRemoverTransacao)  
+    atualizarCards(getTransacoes())
 
     // limpar inputs
     inputDescricao.value = '';
@@ -84,48 +72,13 @@ btnAdicionar.addEventListener('click',()=>{
     inputDate.value = ''
 })
 
+// Mostra todas as transações ao clicar no link de extrato completo
 extratoCompleto.addEventListener('click',()=>{
-    renderLista(getTransacoes());
+    renderLista(getTransacoes(),onRemoverTransacao);
     tituloFiltro.innerText = 'Histórico — Todas as transações'
 })
 
-function validarTexto(descricaoAdicionar){
-    const textotest = descricaoAdicionar.value.trim();
-
-    if (textotest.length < 4) return false;
-
-    for (let char of textotest){
-        if (!isNaN(Number(char)) && char !== ' ') {
-            return false; 
-        }
-    }
-    return true
-}
-
-function validarNumeros(valorAdicionar){
-    const valorTest = Number(valorAdicionar.value)
-    if (isNaN(valorTest) || valorTest <= 0){
-        return false
-    } else {
-        return true
-    }
-}
-
-function validarData(inputDate){
-    const dataAtual = new Date()
-    const dataSelecionada = new Date(inputDate.value)
-
-    if (dataSelecionada > dataAtual) return false
-    return true
-}
-
-function validarInputs(inputTexto,inputNumero,inputDate){
-    if (validarTexto(inputTexto) && validarNumeros(inputNumero) && validarData(inputDate)){
-        return true
-    }
-    return false
-}
-
+// Cria objeto de transação a partir dos inputs
 function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
     if (!validarInputs(inputTexto,inputNumero,inputDate)) return null
     
@@ -138,11 +91,11 @@ function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
     }   
 }
 
+// Filtra as transações pelo mês e ano selecionados
 function filtrarHistorico() {
     const mesSelecionado = Number(mesFiltro.value)
     const anoSelecionado = Number(anoFiltro.value)
 
-    // pega todas as transações
     const todasTransacoes = getTransacoes()
 
     // filtra pelo mês e ano
@@ -151,13 +104,21 @@ function filtrarHistorico() {
         return data.getMonth() === mesSelecionado && data.getFullYear() === anoSelecionado
     })
 
+    // Atualiza o título do Histórico
     const nomeMes = meses[mesSelecionado]
     tituloFiltro.innerText = `Histórico - ${nomeMes} ${anoSelecionado}`
     
-    // renderiza apenas as transações filtradas
-    renderLista(transacoesFiltradas)
+    return transacoesFiltradas
 }
 
-filtrarHistorico()
-// renderLista()
-atualizarCards()
+// Remove transação pelo ID e atualiza UI
+function onRemoverTransacao(id){
+   removerTransacao(id);
+   renderLista(filtrarHistorico(),onRemoverTransacao);
+   atualizarCards(getTransacoes());
+}
+
+// Render inicial ao carregar a página
+renderLista(filtrarHistorico(),onRemoverTransacao)
+atualizarCards(getTransacoes())
+
