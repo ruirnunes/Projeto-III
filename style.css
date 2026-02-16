@@ -278,6 +278,12 @@ body {
     width: 100%;
 }
 
+select#tipo-transacao option {
+    background-color: var(--tertiary-color); /* cor do dropdown */
+    color: var(--accent-color);              /* texto visível */
+}
+
+
 .qtd-container, .tipo-transacao-container {
     display: flex;
     flex-direction: column;
@@ -286,20 +292,26 @@ body {
     min-width: 0;
 }
 
-.categoria-container {
+.data-transacao-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* .categoria-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 8px;
-}
+} */
 
-.categorias {
+/* .categorias {
     color: var(--accent-color);
     font-size: 12px;
     padding: 12px;
     border: 1px solid var(--card-borders);
     border-radius: 8px;
-}
+} */
 
 .adiciona-historia {
     background-color: var(--primary-color);
@@ -344,7 +356,9 @@ body {
 
 .cabecalho-tabela {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr; 
+    grid-template-columns: 2fr 1fr 1fr 1fr  minmax(30px, auto); /* igual às linhas */
+    align-items: center; /* verticalmente no centro */
+    gap: 8px;
     padding: 10px 20px;
     color: var(--gray-titles);
     font-size: 11px;
@@ -352,16 +366,37 @@ body {
     letter-spacing: 1px;
 }
 
+.cabecalho-tabela span {
+    justify-self: center;
+}
+
+
 .item-transacao {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto; /* nome, tipo, data, valor, botão */
     align-items: center;
-    background-color: var(--card-background);
-    border: 1px solid var(--card-borders);
-    border-radius: 8px;
-    padding: 12px 20px;
-    margin-bottom: 12px;
-    
+    gap: 8px;
+    position: relative;
+    padding: 8px 0; /* espaçamento vertical */
+    border-bottom: 1px solid var(--card-borders);
+}
+
+.btn-remover {
+    background: transparent;
+    border: none;
+    color: var(--expense-color);
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0; /* inicialmente invisível */
+    transition: opacity 0.2s;
+}
+
+.item-transacao:hover .btn-remover {
+    opacity: 1; /* aparece no hover */
+}
+
+.item-transacao span {
+    justify-self: center; /* centra horizontalmente na célula do grid */
 }
 
 .info-transacao {
@@ -383,7 +418,7 @@ body {
 }
 
 .historico::-webkit-scrollbar {
-    width: 8px;           /* largura da barra */
+    width: 8px;  /* largura da barra */
 }
 
 .historico::-webkit-scrollbar-track {
@@ -415,6 +450,7 @@ body {
     color: var(--accent-color);
     font-size: 14px;
     font-weight: 500;
+    overflow-wrap: anywhere; /*quebra a linha de modo a que não passe a largura da coluna*/
 }
 
 .etiqueta {
@@ -476,4 +512,75 @@ body {
 }
 .alerta.show {
     display: block;         /* mostrar quando for necessário */
+}
+
+
+/* ========================= */
+/* RESPONSIVIDADE */
+/* ========================= */
+@media (max-width: 992px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-areas:
+            "header"
+            "sidebar"
+            "main"
+            "footer";
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 16px;
+    }
+
+    .transacoes {
+        grid-template-columns: 1fr; /* empilha formulário e histórico */
+        gap: 16px;
+    }
+
+    .nova-transacao,
+    .historico {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .titulo-card,
+    .valor,
+    .informacao,
+    .nome-transacao,
+    .etiqueta,
+    .data-transacao,
+    .valor-transacao {
+        font-size: 12px;
+    }
+}
+
+
+#mes-filtro, #ano-filtro {
+    background-color: transparent;  /* fundo do select */
+    color: var(--accent-color);     /* cor do texto */
+    border: 1px solid var(--card-borders);
+    border-radius: 4px;
+    padding: 8px;
+    appearance: none;               /* remove o estilo default do browser */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#mes-filtro option, #ano-filtro option {
+    background-color: var(--tertiary-color);  /* fundo do dropdown */
+    color: var(--accent-color);               /* texto visível */
 }

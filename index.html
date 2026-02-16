@@ -38,7 +38,10 @@
             <p class="subtitle">Bem vindo de volta, aqui está o que acontece com o seu dinheiro</p>
         </div>
         <div class="header-actions">
-            <div class="calendario">1 Jan - 31 Jan</div>
+            <div class="calendario">
+                <select id="mes-filtro"></select>
+                <select id = "ano-filtro"></select>
+            </div>
             <button class="exportar">Exportar</button>
         </div>
     </header>
@@ -86,8 +89,11 @@
                                 <option value="receita">Receita</option>
                                 <option value="despesa">Despesa</option>
                             </select>
-
                         </div>
+                    </div>
+                    <div class="data-transacao-container">
+                        <label for="data-transacao">Data</label>
+                        <input type="date" id="data-transacao">
                     </div>
                     
                         <!-- ALERTA DE INPUT INVÁLIDO -->
@@ -95,7 +101,7 @@
                         Input inválido. Por favor verifique a descrição e o valor.
                     </div>
                 </div>
-                <div class="categoria-container">
+                <!-- <div class="categoria-container">
                     <div class="categorias">Comida</div>
                     <div class="categorias">Faturas</div>
                     <div class="categorias">Salário</div>
@@ -104,7 +110,7 @@
                     <div class="categorias">Entretenimento</div>
                     <div class="categorias">Lazer</div>
                     <div class="categorias">Outros</div>
-                </div>
+                </div> -->
                 <button class="adiciona-historia">
                     <div class="btn-container">
                         <div class="btn-icon">+</div>
@@ -120,6 +126,7 @@
                         <span>CATEGORIA</span>
                         <span>DATA</span>
                         <span>VALOR</span>
+                        <span></span>
                     </div>
 
                     <div class="lista-transacoes"></div>
