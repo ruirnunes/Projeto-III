@@ -1,2 +1,1 @@
 # Projeto-III
-# projeto-typescript
