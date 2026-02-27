@@ -1,26 +1,29 @@
-import {adicionarTransacao, getTransacoes, removerTransacao} from './State/state.js'
-import { renderLista, atualizarCards } from './UserIterface/userIterface.js'
-import { validarInputs } from './Validations/validations.js'
+import {adicionarTransacao, getTransacoes, removerTransacao} from './modules/State/state.js'
+import { renderLista, atualizarCards } from './modules/UserIterface/userIterface.js'
+import { validarInputs } from './modules/Validations/validations.js'
+import { Transacao } from './types/Transacao.js'
 
 // Captura dos elementos do DOM
-const inputDescricao = document.getElementById('descricao')
-const inputValor = document.getElementById('quantidade')
-const tipoTransacao = document.getElementById('tipo-transacao')
-const btnAdicionar = document.querySelector('.adiciona-historia');
-const alertaInput = document.getElementById('alerta-input');
-const inputDate = document.getElementById('data-transacao')
-const mesFiltro = document.getElementById('mes-filtro')
-const anoFiltro = document.getElementById('ano-filtro')
-const tituloFiltro = document.querySelector('.sub-titulo-historico')
-const extratoCompleto = document.querySelector('.link-extrato')
+const inputDescricao = document.getElementById('descricao') as HTMLInputElement
+const inputValor = document.getElementById('quantidade') as HTMLInputElement
+const tipoTransacao = document.getElementById('tipo-transacao') as HTMLSelectElement
+const btnAdicionar = document.querySelector('.adiciona-historia') as HTMLButtonElement
+const alertaInput = document.getElementById('alerta-input') as HTMLElement
+const inputDate = document.getElementById('data-transacao') as HTMLInputElement
+const mesFiltro = document.getElementById('mes-filtro') as HTMLSelectElement
+const anoFiltro = document.getElementById('ano-filtro') as HTMLSelectElement
+const tituloFiltro = document.querySelector('.sub-titulo-historico') as HTMLElement
+const extratoCompleto = document.querySelector('.link-extrato') as HTMLElement
 
 // Lista de meses para o filtro
-const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+const meses: string[] = ['Janeiro', 'Fevereiro', 'Março', 'Abril',
+     'Maio', 'Junho', 'Julho', 'Agosto',
+     'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 // Preenche o select dos meses
-meses.forEach((mes,index)=>{
+meses.forEach((mes: string,index: number)=>{
     const opcaoMes = document.createElement('option')
-    opcaoMes.value = index
+    opcaoMes.value = String(index)
     opcaoMes.innerText = mes
     mesFiltro.appendChild(opcaoMes)
 })
@@ -29,14 +32,14 @@ meses.forEach((mes,index)=>{
 const anoAtual = new Date().getFullYear()
 for (let i = anoAtual; i >= anoAtual - 10; i--){
     const opcaoAno = document.createElement('option')
-    opcaoAno.value = i
-    opcaoAno.innerText = i
+    opcaoAno.value = String(i)
+    opcaoAno.innerText = String(i)
     anoFiltro.appendChild(opcaoAno)
 }
 
 // Define filtros iniciais com o mês/ano atual
-mesFiltro.value = new Date().getMonth()
-anoFiltro.value = new Date().getFullYear() 
+mesFiltro.value = String(new Date().getMonth())
+anoFiltro.value = String(new Date().getFullYear()) 
 
 // Atualiza a lista quando os filtros mudam
 mesFiltro.addEventListener('change', () => {
@@ -79,20 +82,26 @@ extratoCompleto.addEventListener('click',()=>{
 })
 
 // Cria objeto de transação a partir dos inputs
-function objectTransacao(inputTexto, inputNumero, selectTipo, inputDate){
+function objectTransacao(
+    inputTexto: HTMLInputElement, 
+    inputNumero: HTMLInputElement, 
+    selectTipo: HTMLSelectElement, 
+    inputDate: HTMLInputElement
+): Transacao | null {
+
     if (!validarInputs(inputTexto,inputNumero,inputDate)) return null
     
     return {
         id: Date.now(),
         descricao: inputTexto.value.trim(),
         valor: Number(inputNumero.value),
-        tipo: selectTipo.value,
+        tipo: selectTipo.value as "receita" | "despesa",
         date: inputDate.value
     }   
 }
 
 // Filtra as transações pelo mês e ano selecionados
-function filtrarHistorico() {
+function filtrarHistorico(): Transacao[] {
     const mesSelecionado = Number(mesFiltro.value)
     const anoSelecionado = Number(anoFiltro.value)
 
@@ -112,7 +121,7 @@ function filtrarHistorico() {
 }
 
 // Remove transação pelo ID e atualiza UI
-function onRemoverTransacao(id){
+function onRemoverTransacao(id: number){
    removerTransacao(id);
    renderLista(filtrarHistorico(),onRemoverTransacao);
    atualizarCards(getTransacoes());

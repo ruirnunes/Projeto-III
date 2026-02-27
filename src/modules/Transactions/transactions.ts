@@ -1,4 +1,7 @@
-export function calcularTotais(transacoes){
+import { Transacao } from "../../types/Transacao.js"
+import { Totais } from "../../types/Totais.js"
+
+export function calcularTotais(transacoes: Transacao[]): Totais{
    const totais = transacoes.reduce((acc,transacao)=>{
       if (transacao.tipo === 'receita'){
          acc.receita += transacao.valor

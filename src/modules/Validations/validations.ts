@@ -1,5 +1,5 @@
 // Verifica se a descrição tem pelo menos 4 caracteres e não contém números
-function validarTexto(descricaoAdicionar){
+function validarTexto(descricaoAdicionar: HTMLInputElement): boolean {
     const textotest = descricaoAdicionar.value.trim();
 
     if (textotest.length < 4) return false;
@@ -13,7 +13,7 @@ function validarTexto(descricaoAdicionar){
 }
 
 // Verifica se o valor é um número válido e maior que 0
-function validarNumeros(valorAdicionar){
+function validarNumeros(valorAdicionar: HTMLInputElement): boolean {
     const valorTest = Number(valorAdicionar.value)
     if (isNaN(valorTest) || valorTest <= 0){
         return false
@@ -23,7 +23,7 @@ function validarNumeros(valorAdicionar){
 }
 
 // Verifica se a data não é no futuro
-function validarData(inputDate){
+function validarData(inputDate: HTMLInputElement): boolean {
     const dataAtual = new Date()
     const dataSelecionada = new Date(inputDate.value)
 
@@ -31,7 +31,7 @@ function validarData(inputDate){
     return true
 }
 
-export function validarInputs(inputTexto,inputNumero,inputDate){
+export function validarInputs(inputTexto: HTMLInputElement,inputNumero: HTMLInputElement,inputDate: HTMLInputElement): boolean {
     if (validarTexto(inputTexto) && validarNumeros(inputNumero) && validarData(inputDate)){
         return true
     }

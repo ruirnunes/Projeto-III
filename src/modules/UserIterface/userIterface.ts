@@ -1,8 +1,16 @@
 import { calcularTotais } from "../Transactions/transactions.js";
+import { Transacao } from "../../types/Transacao.js"
+
 
 const listaTransacoes = document.querySelector('.lista-transacoes');
 
-export function renderLista(transacoes,onRemove){
+export function renderLista(
+   transacoes: Transacao[],
+   onRemove: (id: number) => void
+): void {
+   
+   if (!listaTransacoes) return
+
    listaTransacoes.innerHTML = '';
 
    transacoes.forEach(t => {
@@ -64,14 +72,17 @@ export function renderLista(transacoes,onRemove){
    });
 }
 
-export function atualizarCards(transacoes){
+export function atualizarCards(transacoes: Transacao[]): void {
    const totais = calcularTotais(transacoes)
 
-   const valoresCards = document.querySelectorAll('.card .valor')
+   const valoresCards = document.querySelectorAll<HTMLDivElement>('.card .valor')
+   if (valoresCards.length < 3) return
    
    const cardBalanco = valoresCards[0]
    const cardReceita = valoresCards[1]
    const cardDespesa = valoresCards[2]
+
+   if (!cardBalanco || !cardReceita || !cardDespesa) return
 
    cardBalanco.innerText = `${totais.total} €`
    cardReceita.innerText = `${totais.totalReceita} €`
